@@ -11,10 +11,7 @@ def svm_gradient(w, b, x, y, C):
         x: A mini-batch of training example [k, num_features]
         y: Labels corresponding to x of size [k]
 
-    Returns:
-        grad_w: The gradient of the SVM objective w.r.t. w of shape [k, num_features]
-        grad_v: The gradient of the SVM objective w.r.t. b of shape [k, 1]
-        Corr ref mail from 9.11. TOTO add to Git...
+    Returns:        
         grad_w: The gradient of the SVM objective w.r.t. w of shape [num_features]
         grad_b: The gradient of the SVM objective w.r.t. b of shape [1]
 
