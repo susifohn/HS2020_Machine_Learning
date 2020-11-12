@@ -2,7 +2,7 @@
 *.ipynb_checkpoints
 
 # python
-_pycache_/
+__pycache__/
 
 # Package Files #
 *.jar
