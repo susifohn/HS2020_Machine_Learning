@@ -28,7 +28,7 @@ def svm_gradient(w, b, x, y, C):
     # partial derivatives of the cost w.r.t. both parameters              #
     #                                                                     #
     #######################################################################
-    
+    """
     #compute the lambda value
     lamb = 1 / float(C)
     
@@ -39,16 +39,24 @@ def svm_gradient(w, b, x, y, C):
     num_data = np.size(x, 0)
     
     #reshape y so it can be used in the next calculation
-    y = np.reshape(y,(num_data,1))
+    y_ = np.reshape(y,(num_data,1))
   
     #calculate the sum of the data scaled by its corresponding label
-    weights = np.ravel(np.dot(x.T,y))
+    weights = np.ravel(np.dot(x.T,y_))
     
     #compute the gradient with respect to w
-    grad_w = scalar_w + weights / num_data
+    #grad_w = scalar_w + weights / num_data
     
     #compute the gradient with respect to b
-    grad_b = np.sum(y) / num_data
+    #grad_b = np.sum(y_) / num_data
+    """
+    #********************************
+    m = np.size(x,0)
+    summand1 = 1.0/C * w # derrivate of 1/(2C) * w^2
+    summand2 = 1/m * np.dot(y,x)
+    grad_w = summand1 + summand2
+    grad_b = 1/m * np.sum(y)
+    
 
     #######################################################################
     #                         END OF YOUR CODE                            #

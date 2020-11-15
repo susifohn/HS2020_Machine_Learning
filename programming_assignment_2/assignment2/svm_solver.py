@@ -32,8 +32,9 @@ def svm_solver(X, y, C, num_iter=5000, num_per_batch=32):
         #   - Update theta based on alpha and using gradient_function         #
         #                                                                     #
         #######################################################################
-
+        
         # 1st Step: Sample a random mini-batch of size num_per_batch
+        
         num_data = np.size(X,0)
         import random
         random_index = random.sample(range(num_data), num_per_batch)
@@ -41,10 +42,12 @@ def svm_solver(X, y, C, num_iter=5000, num_per_batch=32):
         y_batch = y[random_index]
 
         # 2nd Step: Compute the learning-rate n_t=1/(lambda*t) where lambda=1/C
+        
         n_t = C / (t + 1)
 
         # 3rd Step: Compute the gradients and update the parameters as
         # w:=w-n_t*grad_w and b:=b-n_t*grad_b
+        
         
         grad_w, grad_b = svm_gradient(w, b, X_batch, y_batch, C)
         w = w + n_t * grad_w
