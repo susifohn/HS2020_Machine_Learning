@@ -23,36 +23,16 @@ def svm_loss(w, b, X, y, C):
     # Compute and return the value of the unconstrained SVM objective     #
     #                                                                     #
     #######################################################################
-    """
-    #The inverse of the hyper-parameter
-    lamb = 1 / float(C);
     
-    #the amount of training data
-    num_data = np.size(X,0)
-    
-    #the norm squared of w
-    norm = np.dot(w,w)
-    
-    #sum of weights
-    weights = np.dot(X,w)
-    weights = weights + b
-    weights = np.multiply(np.reshape(weights,np.shape(y)),y)
-    weights = 1 - weights
-    weights = np.maximum(np.zeros(np.shape(y)),weights)
-    weights = np.sum(weights)   
-    #l = lamb / 2 * norm + float(weights) / num_data
-    
-    """
-    # *******************************************
     m = np.size(X,0)
     
-    f_x = np.dot(X,w) +b
-    chi = 1 - y * f_x
+    f = np.dot(X,w) +b
+    xsi = 1 - y * f
 
-    max = chi[chi >= 0] # max(0, chi)
-    sum = np.sum(max)
+    max = xsi[xsi >= 0] # max(0, chi)
     
-    l = 1/(2.0 * C) * np.dot(w,w) + 1/m * sum
+    l = 1/(2*C) * np.dot(w,w) + 1/m * np.sum(max)
+    
     #######################################################################
     #                         END OF YOUR CODE                            #
     #######################################################################

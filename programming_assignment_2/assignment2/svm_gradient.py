@@ -27,37 +27,15 @@ def svm_gradient(w, b, x, y, C):
     # Compute the partial derivatives and set grad_w and grad_b to the    #
     # partial derivatives of the cost w.r.t. both parameters              #
     #                                                                     #
-    #######################################################################
-    """
-    #compute the lambda value
-    lamb = 1 / float(C)
+    #######################################################################    
     
-    #scale w by lambda
-    scalar_w = lamb * w
-    
-    #get the amount of data in the training batch
-    num_data = np.size(x, 0)
-    
-    #reshape y so it can be used in the next calculation
-    y_ = np.reshape(y,(num_data,1))
-  
-    #calculate the sum of the data scaled by its corresponding label
-    weights = np.ravel(np.dot(x.T,y_))
-    
-    #compute the gradient with respect to w
-    #grad_w = scalar_w + weights / num_data
-    
-    #compute the gradient with respect to b
-    #grad_b = np.sum(y_) / num_data
-    """
-    #********************************
     m = np.size(x,0)
-    summand1 = 1.0/C * w # derrivate of 1/(2C) * w^2
-    summand2 = 1/m * np.dot(y,x)
-    grad_w = summand1 + summand2
-    grad_b = 1/m * np.sum(y)
+    f = np.dot(x,w) + b
+    df = np.where(1 - y*f > 0, -y, 0) # derivative for 2 cases
+  
+    grad_w = 1/C * w + 1/m * np.sum(np.multiply(x.T, df).T, axis = 0) 
+    grad_b = 1/m * np.sum(np.where(1 - y*f > 0, 0, -y), axis = 0) # for readability term in () not replaced by df
     
-
     #######################################################################
     #                         END OF YOUR CODE                            #
     #######################################################################
