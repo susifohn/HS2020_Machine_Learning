@@ -27,3 +27,6 @@ __pycache__/
 .idea/
 *.iml 
 out/
+
+# some strange things
+.DS_Store/
