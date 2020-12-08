@@ -25,7 +25,7 @@ def apply_kernel(D, c=0.01):
     #                                                                     #
     #######################################################################
     
-    pass
+    W = np.exp(-D*D/c)
     
     #######################################################################
     #                         END OF YOUR CODE                            #
@@ -56,8 +56,23 @@ def compute_laplacian(X):
     # 4) Compute L = G - W                                                #
     #                                                                     #
     #######################################################################
+
+    # 1) Compute NxN matrix D of pairwise distances 
+    D = np.zeros((X.shape[0],X.shape[0]))
+    for i,vi in enumerate(X):
+        for j,vj in enumerate(X):
+            d = np.linalg.norm(vi-vj) # vi, vj the vertices in X
+            D[i,j]=d
+                
+    # 2) Apply radial-kernel to D to get egde weights' matrix W
+    W = apply_kernel(D)
     
-    pass
+    # 3) Compute diagonal matrix G of nodes' degrees
+    g = np.array([np.sum(row) for row in W])
+    G = np.diag(g)
+    
+    # 4) Compute L = G - W                   
+    L =  G - W 
     
     #######################################################################
     #                         END OF YOUR CODE                            #
@@ -88,7 +103,17 @@ def spectral_transform(X, k):
     #                                                                     #
     #######################################################################
     
-    pass
+    # 1) Compute eigenvalues and eigenvectors of L using np.linalg.eig()
+    w,v = np.linalg.eig(L)
+    
+    # 2) Choose k eigenvectors corresponding to smallest eigenvalues
+    i = np.argsort(w)[:k] # k first sorted indices
+    # Not quite sure whether to ignore the first 'trivial' one.
+    
+    # Eigenvectors assigned to k smalles eigenvalues 
+    Z = v[i]
+    # Z: A matrix of shape [n, k], thus take the transposed
+    Z = Z.T
     
     #######################################################################
     #                         END OF YOUR CODE                            #

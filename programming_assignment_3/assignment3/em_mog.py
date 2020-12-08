@@ -32,6 +32,15 @@ def em_mog(X, k, max_iter=20):
     # Initialize the means of the gaussians. You can use K-means!         #
     #######################################################################
 
+    m = np.size(X,0)
+    
+    km = KMeans(n_clusters = k).fit(X)
+    labels = km.labels_
+    
+    phi = np.array([np.sum(labels==i) for i in range(k)]) / m
+    mu = np.array([np.sum(X[labels==i],axis=0) / np.sum(labels == i) for i in range(k)])
+    sigma = np.array([np.dot(np.transpose(X[labels==i] - mu[i]),X[labels==i] - mu[i]) / np.sum(labels==i) for i in range(k)])
+    
 
     #######################################################################
     #                         END OF YOUR CODE                            #
@@ -75,7 +84,8 @@ def log_likelihood(X, mu, sigma, phi):
     # Compute the log-likelihood of the data under the current model.     #
     # This is used to check for convergnence of the algorithm.            #
     #######################################################################
-
+    k = np.size(phi)
+    ll = np.sum([np.log(np.sum([multivariate_normal.pdf(x, mean=mu[i] ,cov=sigma[i]) * phi[i] for i in range(k)])) for x in X])
 
     #######################################################################
     #                         END OF YOUR CODE                            #
@@ -101,6 +111,12 @@ def e_step(X, mu, sigma, phi):
     # of a gaussian with the current parameters.                          #
     #######################################################################
 
+    k = np.size(phi)
+    
+    w = np.array([ \
+                  [multivariate_normal.pdf(x, mean=mu[i] ,cov=sigma[i]) * phi[i] for i in range(k)] \
+                  / np.sum([multivariate_normal.pdf(x, mean=mu[i] ,cov=sigma[i]) * phi[i] for i in range(k)]) \
+                  for x in X])
 
     #######################################################################
     #                         END OF YOUR CODE                            #
@@ -120,6 +136,14 @@ def m_step(w, X, mu, sigma, phi, k):
     # algorithm.
     #######################################################################
 
+    num_data = np.size(X,0)
+    
+    dw = np.sum(w,axis=0).astype(float)
+    
+    phi = np.sum(w,axis=0) / float(num_data)
+    mu = np.transpose(np.dot(np.transpose(X),w) / dw)
+    sigma = np.array([np.dot(np.transpose(X-mu[i]), (X-mu[i]) * w[:,i][:,np.newaxis]) for i in range(k)]) / dw[:, np.newaxis, np.newaxis]
+    
 
     #######################################################################
     #                         END OF YOUR CODE                            #

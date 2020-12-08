@@ -29,19 +29,25 @@ def kmeans(X, k, max_iter=100):
     #######################################################################
 
     # 1st step: Chose k random rows of X as initial cluster centers
-
-
+    centers = X[np.random.choice(np.size(X,0),k,replace=False)]
+    
+    m = np.size(X,0) # number of data
+    
+    sum = 0 # for convergence check
     for i in range(max_iter):
         prev_assign = assign
 
         # 2nd step: Update the cluster assignment
-
+        assign = np.array([np.argmin(np.linalg.norm(X[i] - centers,axis=1)) for i in range(m)])
 
         # 3rd step: Check for convergence
-
-
+        newSum = np.sum(np.power(np.linalg.norm(X - centers[assign], axis=1), 2))
+        if(np.isclose(sum, newSum)):
+            break
+        sum = newSum
+ 
         # 4th step: Update the cluster centers based on the new assignment
-
+        centers = np.array([np.sum(X[assign==i], axis=0) / np.sum(assign==i) for i in range(k)])
 
     #######################################################################
     #                         END OF YOUR CODE                            #
