@@ -108,12 +108,9 @@ def spectral_transform(X, k):
     
     # 2) Choose k eigenvectors corresponding to smallest eigenvalues
     i = np.argsort(w)[:k] # k first sorted indices
-    # Not quite sure whether to ignore the first 'trivial' one.
     
-    # Eigenvectors assigned to k smalles eigenvalues 
-    Z = v[i]
-    # Z: A matrix of shape [n, k], thus take the transposed
-    Z = Z.T
+    # Eigenvec assigned to k smalles eigenval (in columns of v) with Z of shape [n,k]
+    Z = v[:,i]
     
     #######################################################################
     #                         END OF YOUR CODE                            #
